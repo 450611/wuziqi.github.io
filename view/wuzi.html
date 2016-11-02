@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="index.css" rel="stylesheet" />
+</head>
+<body>
+   <p>棋盘大小:</p>
+   <label>横：</label><input type="text" id="x" value="25"> <label>竖：</label><input type="text" id="y" value="25"><button id="getMap">生成</button>
+   <script src="index.js"></script>
+   <script src="http://realtime.plhwin.com/socket.io/socket.io.js"></script>
+   <script>
+        var socket = io.connect('http://127.0.0.1:3000/');
+        var name = prompt("输入您的姓名","");
+        socket.emit("login", { name : name});
+        socket.on("xiaqi", function(data) {
+            console.log(data);
+            if(data.name == name){ return ;}
+            var map = document.querySelector("#map");
+            if(!map){ start();}
+            serverDraw(data.x, data.y)
+        })
+
+        socket.on("login", function(data){
+            alert(data.name + "加入");
+        })
+   </script>
+</body>
+</html>
